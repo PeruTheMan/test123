@@ -1,0 +1,33 @@
+﻿Imports System.Data.SqlClient
+Imports Microsoft.Reporting.WinForms
+Public Class frmRoleReport
+    Private ds As DataSet
+    Private da As SqlDataAdapter
+    Private Role As CRole
+    Private Sub frmRoleReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Me.rpvRoleReport.RefreshReport()
+    End Sub
+
+    Public Sub Display()
+        Role = New CRole
+        rpvRoleReport.LocalReport.ReportPath = AppDomain.CurrentDomain.BaseDirectory & "Reports\rptRoles.rdlc"
+        ds = New DataSet
+        da = Role.GetReportData()
+        da.Fill(ds)
+        rpvRoleReport.LocalReport.DataSources.Add(New ReportDataSource("dsRoles", ds.Tables(0)))
+        rpvRoleReport.SetDisplayMode(DisplayMode.PrintLayout)
+        rpvRoleReport.RefreshReport()
+        Me.Cursor = Cursors.Default
+        Me.ShowDialog()
+
+    End Sub
+
+    Private Sub btnCloser_Click(sender As Object, e As EventArgs) Handles btnCloser.Click
+        Me.Close()
+    End Sub
+
+    Private Sub rpvRoleReport_Load(sender As Object, e As EventArgs) Handles rpvRoleReport.Load
+
+    End Sub
+End Class
